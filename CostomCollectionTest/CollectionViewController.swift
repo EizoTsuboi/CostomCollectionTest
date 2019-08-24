@@ -23,43 +23,29 @@ class CollectionViewController: UICollectionViewController {
     ]
     var giveColorCell: String = ""
     var giveColor: UIColor = UIColor()
-    var givePicker: String = ""
-
+    var giveIndex:IndexPath = IndexPath()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         for _ in 0...100{
             let red:String = "赤"
             colorCollectioncell.append(red)
         }
-
-        // Register cell classes
         let nib = UINib(nibName: "CostomCell", bundle: nil)
         self.collectionView!.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
         
-
-
-        // Do any additional setup after loading the view.
+        let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumInteritemSpacing = 20
+        flowLayout.minimumLineSpacing = 25
+        flowLayout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        
+        self.collectionView.collectionViewLayout = flowLayout
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
@@ -69,7 +55,7 @@ class CollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CostomCell
         cell.setData(cellColor: colorCollection[colorCollectioncell[indexPath.row]]!, cellLabel: colorCollectioncell[indexPath.row])
-        // Configure the cell
+        
     
         return cell
     }
@@ -79,6 +65,7 @@ class CollectionViewController: UICollectionViewController {
         print("check1")
         giveColorCell = colorCollectioncell[indexPath.row] //secondViewのpickerに表示する文字
         giveColor = colorCollection[colorCollectioncell[indexPath.row]]! //secondViewのbackgroundcolorの色
+        giveIndex = indexPath
         performSegue(withIdentifier: "cellSegue", sender: nil)
     }
     
@@ -86,14 +73,18 @@ class CollectionViewController: UICollectionViewController {
         let secondViewController: SecondViewController = segue.destination as! SecondViewController
         
         secondViewController.receiveColor = self.giveColor
-        secondViewController.reseibePicker = self.giveColorCell
+        secondViewController.reseivePicker = self.giveColorCell
+        secondViewController.reseiveIndex = giveIndex
         secondViewController.pickerCollection = self.colorCollection
-             print("check2")
-        self.index
+        print("check2")
     }
     
-
-    
+    override func viewWillAppear(_ animated: Bool) {
+        self.collectionView.reloadData()
+        super.viewWillAppear(animated)
+    }
+    @IBAction func unwind(_ segue: UIStoryboardSegue){
+    }
 
     
 }
