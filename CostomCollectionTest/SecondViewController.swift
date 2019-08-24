@@ -36,6 +36,8 @@ class SecondViewController: UIViewController, UIPickerViewDelegate, UIPickerView
        
         let selectPickerIndex: Int? = self.pickerList.index(of: reseivePicker)!
         self.colorPicker.selectRow(selectPickerIndex!, inComponent: 0, animated: false)
+        
+        selectPicker = reseivePicker
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
